@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <input id="fib-input" type="number">
+        <br><br>
+        <button id="wasm-fib-button">WASM Calc Fibonacci</button>
+        <button id="js-fib-button">JS Calc Fibonacci</button>
+        <p id="wasm-fib-result"></p>
+        <p id="js-fib-result"></p>
+    <script>
+        window.exports = {};
+        var fibInput = window.document.getElementById("fib-input");
+        
+        var wasmFibButton = window.document.getElementById("wasm-fib-button");
+        var wasmFibResult = window.document.getElementById("wasm-fib-result");
+
+        var jsFibButton = window.document.getElementById("js-fib-button");
+        var jsFibResult = window.document.getElementById("js-fib-result");
+
+
+
+        wasmFibButton.onclick = () => {
+            const start = window.performance.now();
+            var result = window.asModule.fib(fibInput.value);
+            const end = window.performance.now();
+
+            wasmFibResult.innerText = `Wasm: \nResult: ${result}\nDuration: ${Math.round(end - start)} ms`;
+        }
+
+        function fib(n) {
+            if(n <= 1) return 1;
+            return fib(n - 2) + fib(n - 1); 
+        }
+
+        jsFibButton.onclick = () => {
+            const start = window.performance.now();
+            var result = fib(fibInput.value);
+            const end = window.performance.now();
+
+            jsFibResult.innerText = `JS: \nResult: ${result}\nDuration: ${Math.round(end - start)} ms`;
+        }
+    </script>
+    <script src="./index.js"></script>
+</html>
